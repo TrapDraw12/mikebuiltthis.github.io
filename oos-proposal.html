@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero-Drift OOS Management | Mike Roach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #e07a38;
+            --accent-light: #f5e6db;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #fff;
+            --border: #e5e5e5;
+            --code-bg: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Inconsolata', 'SF Mono', Consolas, monospace;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Main content */
+        main {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 6rem 1.5rem 4rem;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'SF Mono', Consolas, monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'SF Mono', Consolas, monospace;
+        }
+
+        /* Horizontal rule */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        /* Meta info */
+        .meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Back link at bottom */
+        .back-link {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .back-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+            </svg>
+            Back to Portfolio
+        </a>
+    </nav>
+
+    <main>
+        <h1>Zero-Drift OOS Management</h1>
+        <p class="subtitle">A Scalable Solution for Pharmacy Operations</p>
+        
+        <div class="meta">
+            <strong>Author:</strong> Mike Roach<br>
+            <strong>Date:</strong> November 2025
+        </div>
+
+        <h2>Executive Summary</h2>
+
+        <h3>The Problem in Plain Terms</h3>
+        <p>Every day, pharmacy staff across the organization perform a task that should not exist: manually transcribing data that already lives in our systems.</p>
+        
+        <p>When a medication fails to arrive from a supplier, an invoice is generated. That invoice contains everything needed to resolve the exception—NDC numbers, quantities, expected delivery dates. Meanwhile, the Out-of-Stock queue in Intercom Plus contains the same information from the pharmacy's perspective. These two data sets should talk to each other. They do not. Instead, a human being prints a PDF, logs into a legacy system, and manually cross-references line by line, clearing exceptions one at a time, waiting for each claim to adjudicate before moving to the next.</p>
+        
+        <p>This is not a minor inefficiency. It is a structural flaw that scales across every location, every day, consuming hours of skilled labor on pure data transcription—time that could be spent with patients.</p>
+
+        <h3>Why This Matters Beyond Efficiency</h3>
+        <p>The obvious cost is time. The less obvious cost is data integrity.</p>
+        
+        <p>The current system architecture lacks safeguards against inventory drift. When exceptions are processed through fragmented workflows—jumping between Intercom Plus, RXI, supplier websites, and email—there are multiple points where inventory counts can become disconnected from reality. On-hand quantities become unreliable. Automatic reordering algorithms, which depend on accurate counts, begin to fail. The system loses its ability to self-correct, and staff must compensate with additional manual checks and workarounds.</p>
+        
+        <p>This creates a compounding problem: the more the system drifts, the more manual intervention it requires, which introduces more opportunities for drift.</p>
+
+        <h3>The Solution Concept</h3>
+        <p>The fix is not a wholesale replacement of existing systems. It is an integration layer—a bridge that allows the data already flowing through our operations to connect where it currently cannot.</p>
+        
+        <p><strong>Core Automation:</strong> Invoice data is parsed automatically and cross-referenced against the OOS queue. Matches are validated and cleared without manual transcription. Only true exceptions—items requiring human judgment—surface for staff review.</p>
+        
+        <p><strong>Interface Modernization:</strong> The OOS queue becomes sortable, filterable, and actionable. Staff can select multiple items, view invoices alongside the queue, and process exceptions in batches rather than one painful click at a time.</p>
+        
+        <p><strong>System Integration:</strong> Intercom Plus, RXI, and supplier availability data connect through a unified layer. Staff no longer context-switch between five disconnected systems to complete a single task.</p>
+        
+        <p>This approach is modular. Each component delivers value independently, but together they transform a fragmented workflow into a coherent operation.</p>
+
+        <h3>The Opportunity</h3>
+        <p>This is not a complaint about how things are. It is a recognition that we have the data, the technology exists, and the path forward is clear. The gap between our current state and a dramatically better one is not a moonshot—it is an engineering problem with known solutions.</p>
+        
+        <p>Pharmacy staff are capable of far more than data transcription. The systems they depend on should reflect that.</p>
+
+        <h3>The Ask</h3>
+        <p>I am requesting a conversation.</p>
+        
+        <p>This document represents significant thought about a real operational problem, grounded in daily experience with the workflows in question. I am not asking for immediate approval or resources. I am asking for the opportunity to discuss this further—to pressure-test the ideas, identify obstacles I may not see from my vantage point, and explore whether there is a path to pilot this approach.</p>
+        
+        <p>If this resonates, I would welcome thirty minutes to walk through the details and answer questions.</p>
+
+        <hr>
+
+        <h2>Technical Proposal: Detailed Analysis and Architecture</h2>
+
+        <h3>1.1 The OOS Exception Process — Step by Step</h3>
+        <p>The following represents the standard workflow for processing Out-of-Stock exceptions when a supplier invoice arrives. This occurs multiple times daily at each pharmacy location.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>Action</th>
+                    <th>Systems Involved</th>
+                    <th>Friction Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Open web browser, navigate to email, authenticate, locate invoice</td>
+                    <td>Email system</td>
+                    <td>Multiple authentication layers; no mobile-optimized access</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Download and print PDF invoice</td>
+                    <td>Email / Local printer</td>
+                    <td>Physical paper dependency; no digital workflow option</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Log into Intercom Plus</td>
+                    <td>Intercom Plus (legacy DOS-era application)</td>
+                    <td>Separate authentication; slow initialization; blocks other desktop applications</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Navigate to OOS exception queue</td>
+                    <td>Intercom Plus</td>
+                    <td>Queue sorted by patient name only; sort order cannot be changed</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Manually cross-reference printed invoice against queue entries</td>
+                    <td>Paper invoice + Intercom Plus</td>
+                    <td>High cognitive load; error-prone transcription; no search functionality</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Clear each exception individually</td>
+                    <td>Intercom Plus</td>
+                    <td>No multi-select capability; must wait for each claim to adjudicate before proceeding</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Queue refreshes to top after each action</td>
+                    <td>Intercom Plus</td>
+                    <td>Loses place in queue; must scroll/navigate back to continue</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Exit Intercom Plus entirely</td>
+                    <td>—</td>
+                    <td>Full context switch required</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Log into RXI</td>
+                    <td>RXI (inventory management)</td>
+                    <td>Separate authentication; duplicated data entry</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Manually reorder medications that did not arrive</td>
+                    <td>RXI</td>
+                    <td>No integration with invoice data; manual lookup required</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Check supplier website separately</td>
+                    <td>External supplier portal</td>
+                    <td>No integration with RXI; availability data not connected to ordering workflow</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Contact patients and/or other locations as needed</td>
+                    <td>Phone / Communication systems</td>
+                    <td>Reactive rather than proactive; no automated notification capability</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>1.2 System Fragmentation Visualization</h3>
+        <p>The current workflow requires navigation across five disconnected systems:</p>
+
+<pre>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CURRENT STATE                                      │
+│                                                                              │
+│    ┌──────────┐     ┌──────────────┐     ┌─────────┐     ┌──────────────┐   │
+│    │  Email   │     │ Intercom Plus│     │   RXI   │     │   Supplier   │   │
+│    │  System  │     │   (Legacy)   │     │         │     │   Portals    │   │
+│    └────┬─────┘     └──────┬───────┘     └────┬────┘     └──────┬───────┘   │
+│         │                  │                  │                  │          │
+│         │                  │                  │                  │          │
+│         ▼                  ▼                  ▼                  ▼          │
+│    ┌─────────────────────────────────────────────────────────────────────┐  │
+│    │                                                                     │  │
+│    │                      HUMAN "MIDDLEWARE"                             │  │
+│    │                                                                     │  │
+│    │   • Prints PDF invoices                                             │  │
+│    │   • Manually transcribes data between systems                       │  │
+│    │   • Maintains context across disconnected interfaces                │  │
+│    │   • Compensates for lack of integration                             │  │
+│    │                                                                     │  │
+│    └─────────────────────────────────────────────────────────────────────┘  │
+│                                                                              │
+│                    ┌───────────────┐                                         │
+│                    │  RXassembly   │                                         │
+│                    │  (Monitors)   │                                         │
+│                    │               │                                         │
+│                    │  Displays OOS │                                         │
+│                    │  data but     │                                         │
+│                    │  READ-ONLY    │                                         │
+│                    └───────────────┘                                         │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+</pre>
+
+        <p><strong>Critical Observation:</strong> The filling station monitors (RXassembly) represent newer infrastructure that displays OOS queue information—but allows zero user input. Staff can see the exceptions but cannot act on them, forcing a return to the main terminal and the Intercom Plus workflow. This is a missed opportunity: the hardware and data connection exist, but the interface does not permit interaction.</p>
+
+        <h3>Expected Outcomes</h3>
+        
+        <p><strong>Time Reclamation:</strong> The current workflow requires skilled staff to perform data transcription that could be automated. By eliminating manual cross-referencing and enabling batch operations, the time required for OOS exception processing is dramatically reduced. This time returns to the available capacity pool for patient-facing activities.</p>
+        
+        <p><strong>Error Reduction:</strong> Manual transcription between systems introduces error opportunities at each step. Automated matching eliminates transcription errors entirely for matched items. Confidence scoring catches ambiguous cases before they result in incorrect actions.</p>
+        
+        <p><strong>Data Integrity:</strong> Unified data flow between systems reduces drift between inventory counts and reality. Automated reconciliation checks catch discrepancies earlier. Audit trails enable root cause analysis when issues occur.</p>
+
+        <h3>Patient Outcomes</h3>
+        
+        <p><strong>Faster Resolution:</strong> Exceptions processed more quickly mean medications arrive in patient hands sooner. Automated processing reduces the time from invoice receipt to prescription fill.</p>
+        
+        <p><strong>Proactive Communication:</strong> With supplier availability and shortage data integrated, staff can proactively contact patients about delays or alternatives rather than waiting for patients to inquire.</p>
+        
+        <p><strong>Adherence Support:</strong> Time reclaimed from administrative tasks can be directed toward medication therapy management, adherence counseling, and other interventions that directly impact patient health.</p>
+
+        <hr>
+
+        <h3>Closing Perspective</h3>
+        <p>This proposal addresses a specific operational problem—OOS exception management—but it represents something larger: the recognition that our systems contain untapped potential.</p>
+        
+        <p>The data already exists. The technology to connect it is not exotic. The people doing the work understand the friction better than anyone. What has been missing is the architectural bridge that transforms fragmented workflows into coherent operations.</p>
+        
+        <p>This is not about replacing human judgment with automation. It is about reserving human judgment for decisions that require it, and automating the mechanical transcription that currently consumes skilled capacity.</p>
+        
+        <p>The path forward is clear. The question is whether we walk it.</p>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Portfolio</a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Status Indicator System | Mike Roach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #e07a38;
+            --accent-light: #f5e6db;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #fff;
+            --border: #e5e5e5;
+            --code-bg: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Inconsolata', 'SF Mono', Consolas, monospace;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Main content */
+        main {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 6rem 1.5rem 4rem;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* Message examples */
+        .message-example {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* Horizontal rule */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        /* Meta info */
+        .meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Back link at bottom */
+        .back-link {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .back-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+            </svg>
+            Back to Portfolio
+        </a>
+    </nav>
+
+    <main>
+        <h1>Visual Status Indicator System (VSI)</h1>
+        <p class="subtitle">A Proposal for Patient Notification Design</p>
+        
+        <div class="meta">
+            <strong>Author:</strong> Mike Roach<br>
+            <strong>Objective:</strong> Enhance patient experience through intuitive design
+        </div>
+
+        <h2>Executive Summary</h2>
+        <p>The Visual Status Indicator (VSI) system is designed to streamline patient communication by utilizing universal iconography (🛑, ⚠️, ✅) in SMS notifications. By providing an instant visual "shorthand" for prescription status, we aim to reduce cognitive load for patients and decrease the volume of inbound "status check" phone calls to the pharmacy staff.</p>
+
+        <h2>The Visual Language</h2>
+        <p>To ensure maximum clarity and accessibility, the system moves beyond simple color circles to distinct geometric symbols:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Meaning</th>
+                    <th>Action Level</th>
+                    <th>Trigger Event</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>✅</strong></td>
+                    <td><strong>Ready</strong></td>
+                    <td>Success</td>
+                    <td>Order is bagged and in the bin</td>
+                </tr>
+                <tr>
+                    <td><strong>⚠️</strong></td>
+                    <td><strong>Pending</strong></td>
+                    <td>Information</td>
+                    <td>Insurance delay, partial fill, or estimated wait time</td>
+                </tr>
+                <tr>
+                    <td><strong>🛑</strong></td>
+                    <td><strong>Action Needed</strong></td>
+                    <td>Critical</td>
+                    <td>Out of stock, prescriber follow-up required, or denied</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>End-to-End Notification Workflow</h2>
+
+        <h3>Phase 1: Intake & Processing</h3>
+        <p><strong>Trigger:</strong> Prescription successfully scanned into the system.</p>
+        <div class="message-example">
+            ⚠️ [Pharmacy Name]: We have received your prescription for [Drug Name]. We are currently verifying your insurance. No action is needed at this time.
+        </div>
+        <p><strong>Goal:</strong> Acknowledgment. The yellow symbol indicates "Process in motion."</p>
+
+        <h3>Phase 2: Exception Handling (The "Stop" Protocol)</h3>
+        <p><strong>Trigger:</strong> Insurance rejection or "Out of Stock" status.</p>
+        <div class="message-example">
+            🛑 [Pharmacy Name]: Action Required. We encountered an issue with your prescription for [Drug Name]. Please call us at [Phone] or check your app for details.
+        </div>
+        <p><strong>Goal:</strong> Immediate attention. The red stop sign prevents the patient from showing up to the pharmacy prematurely.</p>
+
+        <h3>Phase 3: Delay Updates</h3>
+        <p><strong>Trigger:</strong> Change in "Promise Time" or waiting for a shipment.</p>
+        <div class="message-example">
+            ⚠️ [Pharmacy Name]: Update: Your order for [Drug Name] is taking longer than expected. New estimated time: [Time]. We will text you when it is ready.
+        </div>
+        <p><strong>Goal:</strong> Temper expectations. Reduces "Is it ready yet?" phone calls.</p>
+
+        <h3>Phase 4: Ready for Pickup</h3>
+        <p><strong>Trigger:</strong> Pharmacist final verification and bagging.</p>
+        <div class="message-example">
+            ✅ [Pharmacy Name]: Great news! Your prescription for [Drug Name] is READY for pickup. Total due: $[Amount]. Our hours today: [Hours].
+        </div>
+        <p><strong>Goal:</strong> Conversion. The green check provides a hit of dopamine and clear confirmation to travel to the store.</p>
+
+        <h3>Phase 5: Pickup Confirmation (Optional)</h3>
+        <p><strong>Trigger:</strong> Order sold at POS.</p>
+        <div class="message-example">
+            ✅ [Pharmacy Name]: Thank you for choosing us! You have successfully picked up your prescription for [Drug Name].
+        </div>
+
+        <h2>Key Benefits</h2>
+
+        <h3>For the Patient</h3>
+        <ul>
+            <li><strong>Glanceability:</strong> Patients can determine the state of their healthcare in under 1 second of looking at their lock screen.</li>
+            <li><strong>Reduced Anxiety:</strong> Clearly defined symbols remove the ambiguity of "System Update" messages.</li>
+        </ul>
+
+        <h3>For the Pharmacy</h3>
+        <ul>
+            <li><strong>Call Volume Reduction:</strong> By proactively using ⚠️ and 🛑, we stop patients from calling to ask about delays.</li>
+            <li><strong>Efficiency:</strong> Streamlined communication allows technicians to focus on filling rather than phone triage.</li>
+        </ul>
+
+        <h2>Risk Mitigation & Implementation</h2>
+        <ul>
+            <li><strong>Double Encoding:</strong> Every notification includes both the symbol and the written status (e.g., "✅ READY") to ensure those with color-blindness or older devices can still interpret the message.</li>
+            <li><strong>Tone Consistency:</strong> The system uses professional, concise language to balance the casual nature of emojis.</li>
+            <li><strong>Character Limits:</strong> Notifications are optimized to stay under 160 characters (GSM segments) to minimize SMS overhead costs.</li>
+        </ul>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Portfolio</a>
+        </div>
+    </main>
+</body>
+</html>
