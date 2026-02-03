@@ -1,25 +1,525 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mike's Page</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mike Roach | Pharmacy Operations & Systems Thinking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #e07a38;
+            --accent-light: #f5e6db;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #fff;
+            --border: #e5e5e5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inconsolata', 'SF Mono', Consolas, monospace;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg);
+            font-size: 1rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+
+        nav ul {
+            max-width: none;
+            margin: 0;
+            padding-left: 4rem;
+            display: flex;
+            justify-content: flex-start;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main content */
+        main {
+            max-width: 700px;
+            margin: 0;
+            padding: 0 1.5rem 0 4rem;
+        }
+
+        section {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        /* Hero */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 4rem;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--bg);
+        }
+
+        .hero-text h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text .title {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Section headers */
+        h2 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* About */
+        .about-content p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .about-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Experience */
+        .timeline {
+            position: relative;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 1.5rem;
+            padding-bottom: 2rem;
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.35rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 4px rgba(224, 122, 56, 0.15);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-company {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(224, 122, 56, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .project-type {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .project-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        .project-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .education-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .education-item h3 {
+            font-size: 1rem;
+        }
+
+        .education-school {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .education-note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        /* Contact */
+        .contact-content {
+            text-align: left;
+        }
+
+        .contact-content p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: flex-start;
+            gap: 2rem;
+        }
+
+        .contact-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .contact-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        .contact-links a:hover {
+            color: var(--accent);
+        }
+
+        .contact-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                padding-left: 1.5rem;
+            }
+
+            main {
+                padding: 0 1.5rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-img {
+                width: 120px;
+                height: 120px;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .contact-content {
+                text-align: center;
+            }
+
+            .contact-links {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Mike's Website, founded 9-12-2025</h1>
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-  <p>Hello friends and I love you Ayah!</p>
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <img src="profile.jpeg" alt="Mike Roach" class="profile-img">
+                <div class="hero-text">
+                    <h1>Mike Roach</h1>
+                    <p class="title">Senior Pharmacy Technician</p>
+                    <p>I bring an engineering mindset to pharmacy operations—identifying inefficiencies, building solutions, and focusing on what matters most: patient outcomes.</p>
+                </div>
+            </div>
+        </section>
 
-  <ul>
-    <li><a href="program1.html">Program 1</a></li>
-    <li><a href="vaccinecounter.html">Program 2</a></li>
+        <section id="about">
+            <h2>About</h2>
+            <div class="about-content">
+                <p>My path to pharmacy wasn't linear. I started in chemical engineering at Iowa State, where I learned to think about problems at a systems level. Following that, I first began working in a pharmacy and gained a passion for it. These experiences all led me to medical school, where I completed preclinical coursework followed by clinical rotations in Family Medicine, Pediatrics, and OB-GYN before health challenges required me to step away.</p>
+                <p>What I bring into pharmacy is a way of seeing operations that most technicians don't have—understanding not just the task in front of me, but how workflows connect, where friction accumulates, and what could be improved. I've become someone who can step into any store, any volume, and contribute immediately because I understand pharmacy at an architectural level.</p>
+                <p>I don't just execute processes. I improve them. When I see inefficiencies that affect my colleagues and our patients, I document them, analyze them, and propose solutions. The projects below represent that approach in action.</p>
+            </div>
+        </section>
 
-  </ul>
-  
-  <p>Contact: mike.r1694@gmail.com</p>
+        <section id="experience">
+            <h2>Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2016 – Present</div>
+                    <div class="timeline-title">Senior Pharmacy Technician</div>
+                    <div class="timeline-company">Walgreens — Freeport & Rockford, IL</div>
+                    <div class="timeline-desc">High-volume retail pharmacy operations. PTCB certified with immunization administration credentials. Frequently requested to fill coverage gaps across multiple locations in the district. Developed workflow tools and authored operational improvement proposals.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024</div>
+                    <div class="timeline-title">Production Line Lead</div>
+                    <div class="timeline-company">PCI — Rockford, IL</div>
+                    <div class="timeline-desc">Oversaw pharmaceutical packaging line operations and team coordination. Maintained batch records and ensured GMP compliance.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2012 – 2014</div>
+                    <div class="timeline-title">Tutor</div>
+                    <div class="timeline-company">Highland Community College — Freeport, IL</div>
+                    <div class="timeline-desc">Walk-in tutoring for chemistry, biology, mathematics, and statistics. Developed communication skills through one-on-one instruction.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects & Proposals</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-type">Operational Proposal</div>
+                    <h3>Zero-Drift OOS Management</h3>
+                    <p>A comprehensive proposal addressing inventory management inefficiencies in retail pharmacy. Documents the current workflow friction, proposes an integration architecture to automate exception handling, and outlines a phased implementation approach. Designed to reclaim skilled labor from data transcription and improve inventory accuracy.</p>
+                    <a href="oos-proposal.html" class="project-link">
+                        Read the proposal
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="project-card">
+                    <div class="project-type">Operational Proposal</div>
+                    <h3>Visual Status Indicator System</h3>
+                    <p>A patient communication framework using universal iconography in SMS notifications. Designed to reduce cognitive load for patients and decrease inbound status-check calls to pharmacy staff through intuitive visual shorthand.</p>
+                    <a href="vsi-proposal.html" class="project-link">
+                        Read the proposal
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="project-card">
+                    <div class="project-type">Workflow Tool</div>
+                    <h3>Drug Filling Machine Manager</h3>
+                    <p>A web-based tool for tracking and managing 220 filling machine cell assignments. Features include sortable views, CSV import/export, and local browser storage. Built to reduce friction in daily operations.</p>
+                    <a href="program1.html" class="project-link">
+                        View the tool
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="project-card">
+                    <div class="project-type">Workflow Tool</div>
+                    <h3>Vaccine Tracker</h3>
+                    <p>A simple counter for tracking daily flu shot and total vaccine administration against goals. Built to support immunization-administering technicians during peak vaccination seasons.</p>
+                    <a href="vaccinecounter.html" class="project-link">
+                        View the tool
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <div class="education-item">
+                <h3>B.S. Chemical Engineering</h3>
+                <div class="education-school">Iowa State University — GPA 3.50</div>
+            </div>
+            <div class="education-item">
+                <h3>Medical Coursework</h3>
+                <div class="education-school">University of Illinois College of Medicine Rockford, 2018–2021</div>
+                <div class="education-note">Completed clinical clerkships and NBME shelf examinations in Family Medicine, Pediatrics, and OB-GYN</div>
+            </div>
+            <div class="education-item">
+                <h3>A.S. Chemistry</h3>
+                <div class="education-school">Highland Community College — GPA 3.86</div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <div class="contact-content">
+                <p>Interested in discussing pharmacy operations, workflow improvements, or opportunities? I'd welcome the conversation.</p>
+                <div class="contact-links">
+                    <a href="mailto:miker1694@gmail.com">miker1694@gmail.com</a>
+                    <a href="tel:8159089463">(815) 908-9463</a>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
